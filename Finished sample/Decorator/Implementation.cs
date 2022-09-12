@@ -42,7 +42,7 @@ namespace Decorator
     /// <summary>
     /// Decorator (as abstract base class)
     /// </summary>
-    public abstract class MailServiceDecoratorBase : IMailService
+    public abstract class MailServiceDecoratorBase : IMailService //This class wraps the IMailService
     {
         private readonly IMailService _mailService;
         public MailServiceDecoratorBase(IMailService mailService)

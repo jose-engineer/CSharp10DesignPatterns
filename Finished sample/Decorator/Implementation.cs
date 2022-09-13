@@ -9,7 +9,7 @@ namespace Decorator
     /// <summary>
     /// ConcreteComponent1
     /// </summary>
-    public class CloudMailService : IMailService
+    public sealed class CloudMailService : IMailService//This class couold be a sealed class and even then you can wrap it
     {
         public bool SendMail(string message)
         {
@@ -21,7 +21,7 @@ namespace Decorator
     /// <summary>
     /// ConcreteComponent2
     /// </summary>
-    public class OnPremiseMailService : IMailService
+    public sealed class OnPremiseMailService : IMailService
     {
         public bool SendMail(string message)
         {
@@ -41,16 +41,20 @@ namespace Decorator
 
     /// <summary>
     /// Decorator (as abstract base class)
+    /// 
+    /// This class wraps the IMailService, but it doesn't add functionality to the mailService. This is an abstract class to store 
+    /// the IMailservice instance. You could name this a base wrapper. We don't want this to be used on its own, so we mark it as
+    /// abstract.
     /// </summary>
-    public abstract class MailServiceDecoratorBase : IMailService //This class wraps the IMailService
+    public abstract class MailServiceDecoratorBase : IMailService
     {
         private readonly IMailService _mailService;
         public MailServiceDecoratorBase(IMailService mailService)
         {
             _mailService = mailService;
         }
-
-        public virtual bool SendMail(string message)
+        
+        public virtual bool SendMail(string message)//mark as virtual so implementing classes can override this and add functionality.
         {
             return _mailService.SendMail(message);
         }
@@ -59,18 +63,18 @@ namespace Decorator
     /// <summary>
     /// ConcreteDecorator1
     /// </summary>
-    public class StatisticsDecorator : MailServiceDecoratorBase
+    public class StatisticsDecorator : MailServiceDecoratorBase //Implements the MailServiceDecoratorBase abstract clas
     {
         public StatisticsDecorator(IMailService mailService) 
-            : base(mailService)
+            : base(mailService)//Call into base constructor, so mailService is stored in the private field '_mailService' from the base wrapper.
         {
         }
 
-        public override bool SendMail(string message)
+        public override bool SendMail(string message)//Override the SendMail method, collect some statistics, and send the mail.
         {
             // Fake collecting statistics 
-            Console.WriteLine($"Collecting statistics in {nameof(StatisticsDecorator)}.");
-            return base.SendMail(message);
+            Console.WriteLine($"Collecting statistics in {nameof(StatisticsDecorator)}."); //ADDED FUNCTIONALITY
+            return base.SendMail(message);//call base.SendMail, as the actual implementation of sending mail is at that level.
         }
     }
 

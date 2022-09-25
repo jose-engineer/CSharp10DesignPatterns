@@ -1,5 +1,7 @@
 ﻿namespace Observer
 {
+    //Helper class. Hold the state change information that needs to be sent to observers. For example, a ticket change for artists with ID 1
+    //and amount 2 means that 2 tickets have been sold for this artist. It's an object of this type that will be received by observers.
     public class TicketChange
     {
         public int Amount { get; private set; }
@@ -13,13 +15,15 @@
     }
 
     /// <summary>
-    /// Subject
+    /// Subject (Notify, Add observer and Remove Observer)
+    /// It's an abstract class because we don't want it to be used on its own because it doesn't contain the state information observers 
+    /// want to be notified about.
     /// </summary>
     public abstract class TicketChangeNotifier
     {
-        private List<ITicketChangeListener> _observers = new();
+        private List<ITicketChangeListener> _observers = new();// list of observers, objects that implement ITicketChangeListener.
 
-        public void AddObserver(ITicketChangeListener observer)
+        public void AddObserver(ITicketChangeListener observer)//Since Concrete Observers implements ITicketChangeListener we can add it
         {
             _observers.Add(observer);
         }
@@ -39,17 +43,20 @@
     }
 
     /// <summary>
-    /// ConcreteSubject
+    /// ConcreteSubject (managing state)
     /// </summary>
-    public class OrderService : TicketChangeNotifier
+    public class OrderService : TicketChangeNotifier //OrderService subclass is the subject, the TicketChangeNotifier.
     {
+        //CompleteTicketSale is called by clients when a ticket sale is completed. That means that at this moment, the OrderService must
+        //update its state. It must update its data store so the correct amount of tickets for the correct artist is deducted. For demo
+        //purposes, we'll assume that when we see an OrderService is changing its state message that the local data store is adjusted.
         public void CompleteTicketSale(int artistId, int amount)
         {
             // change local datastore.  Datastore omitted in demo implementation.
             Console.WriteLine($"{nameof(OrderService)} is changing its state.");
             // notify observers 
             Console.WriteLine($"{nameof(OrderService)} is notifying observers...");
-            Notify(new TicketChange(artistId, amount));
+            Notify(new TicketChange(artistId, amount));//calls Notify method on its base class (TicketChangeNotifier) to notify observers
         }         
     }
 

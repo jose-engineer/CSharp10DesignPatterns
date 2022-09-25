@@ -9,8 +9,8 @@ orderService.AddObserver(ticketStockService);//As a parameter to AddObserver we 
 orderService.AddObserver(ticketResellerService);//and both our TicketStockService and TicketResellerService do.
 
 // notify, artist 1, amount 2
-orderService.CompleteTicketSale(1, 2);
-
+orderService.CompleteTicketSale(1, 2);//This call should result in both observers being notified of this.
+                                      //The nice thing here is that we can manage all of this at runtime. We added the observers at runtime.
 Console.WriteLine();
 
 // remove one observer

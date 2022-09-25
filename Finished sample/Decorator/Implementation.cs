@@ -9,7 +9,7 @@ namespace Decorator
     /// <summary>
     /// ConcreteComponent1
     /// </summary>
-    public sealed class CloudMailService : IMailService//This class couold be a sealed class and even then you can wrap it
+    public sealed class CloudMailService : IMailService//This class could be a sealed class and even then you can wrap it
     {
         public bool SendMail(string message)
         {

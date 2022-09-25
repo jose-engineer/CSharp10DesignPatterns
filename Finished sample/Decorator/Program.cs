@@ -16,10 +16,8 @@ statisticsDecorator.SendMail($"Hi there via {nameof(StatisticsDecorator)} wrappe
 // through the MessageDatabaseDecorator, and then we run through the stored messages to see whether or not our decorator successfully
 // executed.
 var messageDatabaseDecorator = new MessageDatabaseDecorator(onPremiseMailService);
-messageDatabaseDecorator.SendMail(
-    $"Hi there via {nameof(MessageDatabaseDecorator)} wrapper, message 1.");
-messageDatabaseDecorator.SendMail(
-    $"Hi there via {nameof(MessageDatabaseDecorator)} wrapper, message 2.");
+messageDatabaseDecorator.SendMail($"Hi there via {nameof(MessageDatabaseDecorator)} wrapper, message 1.");
+messageDatabaseDecorator.SendMail($"Hi there via {nameof(MessageDatabaseDecorator)} wrapper, message 2.");
 
 foreach (var message in messageDatabaseDecorator.SentMessages)
 

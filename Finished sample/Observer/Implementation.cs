@@ -45,11 +45,12 @@
     /// <summary>
     /// ConcreteSubject (managing state)
     /// </summary>
-    public class OrderService : TicketChangeNotifier //OrderService subclass is the subject, the TicketChangeNotifier.
+    public class OrderService : TicketChangeNotifier //OrderService is the subclass of TicketChangeNotifier.
     {
         //CompleteTicketSale is called by clients when a ticket sale is completed. That means that at this moment, the OrderService must
-        //update its state. It must update its data store so the correct amount of tickets for the correct artist is deducted. For demo
-        //purposes, we'll assume that when we see an OrderService is changing its state message that the local data store is adjusted.
+        //update its state. It must update its data store so the correct amount of tickets for the correct artist is deducted (when the order
+        //is fulfilled, the tickets should not be available anymore). For demo purposes, we'll assume that when we see an OrderService is
+        //changing its state message that the local data store is adjusted.
         public void CompleteTicketSale(int artistId, int amount)
         {
             // change local datastore.  Datastore omitted in demo implementation.
@@ -72,7 +73,9 @@
     /// ConcreteObserver
     /// </summary>
     public class TicketResellerService : ITicketChangeListener
-    { 
+    {
+        //This method gets a state change from the concrete subject passed in, and that is the TicketChange object. Thanks to the info it
+        //gets from that object, it can adjust its own data store accordingly (for TicketResellerService or TicketStockService).
         public void ReceiveTicketChangeNotification(TicketChange ticketChange)
         {
             // update local datastore (datastore omitted in demo implementation)
